@@ -19,19 +19,32 @@ const scalingFactor = width/(6*pi);
 
 let imageData = graphics.createImageData(width, height);
 
+const getMousePos = (evt) => {
+	const rect = canvas.getBoundingClientRect();
+
+	return {
+		x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
+		y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+	};
+}
+
 canvas.addEventListener("click", function(mouse) {
+	let m = getMousePos(mouse);
+	let mouseX = m.x;
+	let mouseY = m.y;
+
 	if (click.checked) {
 		translatedX = 0;
 		translatedY = 0;
 		scale = 1;
 
-		real.value = (mouse.offsetX-width/2)/(scalingFactor);
-		complex.value = (mouse.offsetY-height/2)/(scalingFactor);
+		real.value = (mouseX-width/2)/(scalingFactor);
+		complex.value = (mouseY-height/2)/(scalingFactor);
 
-		juliaSetDraw((mouse.offsetX-width/2)/(scalingFactor), (mouse.offsetY-height/2)/(scalingFactor), num.value);
+		juliaSetDraw((mouseX-width/2)/(scalingFactor), (mouseY-height/2)/(scalingFactor), num.value);
 	} else {
-		mouseX = (mouse.offsetX-width/2)/(scalingFactor);
-		mouseY = (mouse.offsetY-height/2)/(scalingFactor);
+		mouseX = (mouseX-width/2)/(scalingFactor);
+		mouseY = (mouseY-height/2)/(scalingFactor);
 
 		translatedX += mouseX/scale;
 		translatedY += mouseY/scale;
